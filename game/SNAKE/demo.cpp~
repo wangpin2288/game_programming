@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string>
+#include <stdlib.h>
+#include <unistd.h>
+using namespace std;
+
+#include "snakeMap.hpp"
+#include "Snake.hpp"
+#include "player.hpp"
+
+
+const char filename[] = "map.txt";
+
+void clean(){
+   cout << "\x1b[2J" << flush;
+   cout << "\x1b[1;1f"<<flush;
+}
+
+
+int main(void)
+{
+   clean();
+   snakeMap m1(filename);
+   Snake s1('0',&m1);
+   Player p1("Wangpin",&m1,&s1);   
+   p1.start();
+   return 0;
+}
+
+#endif
+

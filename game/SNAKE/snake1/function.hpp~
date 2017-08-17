@@ -1,0 +1,83 @@
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+
+class Coordinate{
+public:
+   Coordinate(int x,int y):X(x),Y(y){};
+   Coordinate(Coordinate& coor){X=coor.X;Y=coor.Y;};
+   ~Coordinate(){};
+   Coordinate operator+(const Coordinate &coor);
+   Coordinate operator-(const Coordinate &coor);
+   Coordinate operator=(const Coordinate &coor);
+   Coordinate operator+=(const Coordinate &coor);
+   Coordinate operator-=(const Coordinate &coor);
+   bool operator==(const Coordinate &coor);
+public:
+   int X;
+   int Y;
+};
+
+Coordinate Coordinate::operator+(const Coordinate &coor)
+{
+   Coordinate temp;
+   temp.X=this->X+coor.X;
+   temp.Y=this->Y+coor.Y;
+   return temp;
+}
+
+   
+Coordinate Coordinate::operator-(const Coordinate &coor)
+{
+   Coordinate temp;
+   temp.X=this->X-coor.X;
+   temp.Y=this->Y-coor.Y;
+   return temp;
+}
+   
+Coordinate operator=(const Coordinate &coor)
+{
+   this->X=coor.X;
+   this->Y=coor.Y;
+   return *this;
+}
+   
+Coordinate operator+=(const Coordinate &coor)
+{
+   this->X+=coor.X;
+   this->Y+=coor.Y;
+   return *this;
+}
+   
+Coordinate operator-=(const Coordinate &coor)
+{
+   this->X-=coor.X;
+   this->Y-=coor.Y;
+   return *this;
+}
+   
+bool operator==(const Coordinate &coor)
+{
+   if(this->X==coor.X&&this->Y==coor.Y) return 1;
+   else return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+#ifndef FUNCTION_HPP
+#define FUNCTION_HPP
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <unistd.h>
+
+using namespace std;
+
+class Coordinate
+{
+public:
+   Coordinate(int x,int y):X(x),Y(y){};
+   Coordinate(Coordinate c):X(c.X),Y(c.Y);
+   Coordinate operator+(const Coordinate& coor);
+   Coordinate operator=(const Coordinate& coor);
+   bool operator==(const Coordinate& coor);
+
+private:
+   int X;
+   int Y;
+};
+
+Coordinate Coordinate::operator+(const Coordinate& coor)
+{
+   Coordinate temp;
+   temp.X=this->X+coor.X;
+   temp.Y=this->Y+coor.Y;
+   return temp;
+}
+
+Coordinate Coordinate::operator=(const Coordinate& coor)
+{
+   this->X=coor.X;
+   this->Y=coor.Y;
+   return *this;
+}
+
+bool Coordinate::operator==(const Coordinate& coor)
+{
+   if(this->X==coor.X&&this->Y==coor.Y)
+      return 1;
+   else 
+      return 0;
+}
+
+
+
+
+class list_node{
+public:
+   list_node(int a,int b);
+   list_node(Coordinate& c);
+   Coordinate& pos;
+   list_node* next;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

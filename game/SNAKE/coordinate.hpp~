@@ -1,0 +1,67 @@
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <unistd.h>
+
+
+using namespace std;
+
+class Coordinate
+{
+public:
+   Coordinate(int x,int y):m_iX(x),m_iY(y){};
+   Coordinate operator+(const Coordinate& coor);
+   Coordinate operator=(const Coordinate& coor);
+   bool operator==(const Coordinate& coor);
+
+private:
+   int m_iX;
+   int m_iY;
+};
+
+Coordinate Coordinate::operator+(const Coordinate& coor)
+{
+   Coordinate temp;
+   temp.m_iX=this->m_iX+coor.m_iX;
+   temp.m_iY=this->m_iY+coor.m_iY;
+   return temp;
+}
+
+Coordinate Coordinate::operator=(const Coordinate& coor)
+{
+   this->m_iX=coor.m_iX;
+   this->m_iY=coor.m_iY;
+   return *this;
+}
+
+bool Coordinate::operator==(const Coordinate& coor)
+{
+   if(this->m_iX==coor.m_iX&&this->m_iY==coor.m_iY)
+      return 1;
+   else 
+      return 0;
+}
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+/*
+小球下落：
+   有一个二叉树，最大深度为D，且所有叶子的深度都相同。所有节点从上到下，从左到右依次编号为1,2,3,...,(1<<D)-1.在节点1处放一个球，它会往下落，每个节点都有一个开关，初始全部关闭，当每次有小球落到一个开关上时，它的状态都会改变。当小球到达一个内节点时，若该节点开关关闭，则往左走，若开关打开，则往右走，直到走到叶子节点
+
+输入叶子深度D和小球个数I
+输出第I个小球最后所在的叶子编号
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+
+int MAXD = 20;  //二叉树最大深度
+int s[1<<MAXD];  //二叉树最多节点数为1<<MAXD-1
+
+int main()
+{
+   int D,I;
+   while(scanf("%d%d",&D,&I)==2){
+       memset(s,0,sizeof(s));
+       int k,n=1<<D-1;
+       for(int i=0;i<I;i++){  //让I个小球下落
+          k=1;
+          for(;;){
+            s[k]=!s[k];
+            k=s[k]? 2*k+1 : 2*k;
+            if(k>n) break;
+          }
+       }
+       cout<<k/2<<endl;
+   }
+   return 0;
+}
+
+
+
+
+
+
+
+
+
+

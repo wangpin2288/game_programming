@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <iostream>
+#include "russia.cpp"
+using namespace std;
+
+class Rule()
+{
+public:
+   Rule(Russia& r):russia(r),Score(0),Level(1),UpLevel(false),Win(false){};
+   void UpLevel(int level){Level=level;};
+   int Score;
+   bool Win;
+   int Level;
+}

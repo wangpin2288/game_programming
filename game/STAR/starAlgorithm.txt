@@ -1,0 +1,107 @@
+消灭星星游戏算法设计：
+1.游戏规则描述：
+	在初始化好的星星中，有几种颜色不同的星星排列为M行，玩家可以交换任意相邻的两个星星，若能得到三个及以上颜色相同的星星排成一行（列），则可以一并消除，并且消除后的星星上方星星自动掉落进行填充。玩家在有限的步骤内消除的星星越多，得分越高。
+
+2.游戏算法设计
+（1）交换两颗选中的星星（很简单，改变其颜色值即可）
+（2）消除满足条件的星星
+	每次交换完两颗星星后，分别对交换后的星星所在的行和列进行判断，若该行（列）有三个及以上相邻的星星，则被消除。假设C[x][y]存储的是坐标为（x,y）处星星的颜色值（值为0表示此处没有星星），判断函数实现如下：
+
+
+//参数解释：n表示待判断的行号或列号，isRow=true是表示第n行，否则表示第n列，eliVec是一个存储待消除的星星坐标的向量
+void willEliminate(int n,bool isRow,vector<Coordinate&> eliVec)
+{
+	if(isRow) //isRow为真，对第n行进行判断
+	{
+		for(int j=0;j<maxCol;) //第j列
+		{
+			int count=1;
+			for(int _j=j+1;_j<maxCol;_j++)
+			{
+				if(C[n][_j]!=C[n][_j-1]) break;
+				else{
+					count++;
+				}
+			}
+			if(count>=3){
+				for(int m=0;m<count;m++) eliVec.push_back(Coordinate(n,j+m));
+			} //将满足消除条件的星星坐标存入向量eliVec中，以便下一步消除
+			
+			j = j+count;
+		}
+	}
+
+	else{ //对第n列进行判断，实现方法类似
+		for(int i=0;i<maxRow;) //第i行
+		{
+			int count=1;
+			for(int _i=i+1;_i<maxRow;_i++)
+			{
+				if(C[_i][n]!=C[_i-1][n]) break;
+				else{
+					count++;
+				}
+			}
+			if(count>=3){
+				for(int m=0;m<count;m++) eliVec.push_back(Coordinate(i+m,n));
+			} //将满足消除条件的星星坐标存入向量eliVec中，以便下一步消除
+			
+			i = i+count;
+		}
+	}
+}
+
+
+(3)消除满足条件的星星
+	根据步骤（2）可以得到移动后的满足消除条件的星星坐标，对于每个可以被消除的星星，遍历该星星所在列的所有星星，将其从下到上依次移动一格，覆盖掉其下方的位置。具体实现函数大致如下：
+
+//认为星星的坐标原点位于左下方
+void beEliminated(int x,int y)
+{
+	for(int i=x+1;i<maxRow;i++)
+	{
+		if(C[i][y]==0) return; //该位置为空
+		else{
+			C[i-1][y]=C[i][y]; //上面一格的星星覆盖下面的位置
+			C[i][y]=0; //上面的星星值设为0
+		}
+	}
+
+}
+
+(3)重复步骤（2）（3），直到没有可消除的星星为止
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

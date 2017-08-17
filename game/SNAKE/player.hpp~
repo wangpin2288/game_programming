@@ -1,0 +1,112 @@
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
+#include <stdlib.h>
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <unistd.h>
+using namespace std;
+
+#include "snakeMap.hpp"
+#include "Snake.hpp"
+
+class Player
+{
+public:
+   Player(string name,snakeMap* Map,Snake* s);
+   snakeMap* getMap(){return map;};
+   Snake* getSnake(){return snake;};
+   bool checkWin();
+   int getScore(){reutrn score;};
+   
+   void moveUp();
+   void moveDown();
+   void moveLeft();
+   void moveRight();
+
+   void start();
+private:
+   string playerName;
+   snakeMap* map;
+   Snake* snake;
+   int score;
+};
+
+Player::Player(string name,snakeMap* Map,Snake* s):playerName(name),map(Map),snake(s)
+{
+   checkWin()=0;
+   score=0;
+}
+
+bool Player::checkWin()
+{
+   if(map->checkIn(snake->getHead())||map->checkIn(snake->getTail())) return 0;
+   else return 1;
+}
+
+
+void Player::moveUp()
+{
+   while(getchar()=='w')
+   {
+     snake->Up();      
+     if(map->checkWall(snake->head()+(-1,0))) break;  
+   }
+}
+
+
+void Player::moveDown()
+{
+   while(getchar()=='s')
+   {
+     getSnake()->Down();      
+     if(map->checkWall(snake->head()+(1,0))) break;
+   }
+}
+
+void Player::moveLeft()
+{
+   while(getchar()=='a')
+   {
+     getSnake()->Left();      
+     if(map->checkWall(snake->head()+(0,-1))) break;
+   }
+  
+}
+   
+void Player::moveRight()
+{
+   while(getchar()=='d')
+   {
+     getSnake()->Right();      
+     if(map->checkWall(snake->getHead()+(0,1))) break;
+   }
+  
+}
+   
+
+void Player::start()
+{
+ while(!checkWin()){
+   gotoxy(30,1);
+   cout<<"Player:"<<playerName<<"  Score:"<<score<<endl;
+  
+   char c=getchar();
+   switch(c){
+     case 'w':moveUp();
+     case 's':moveDown();
+     case 'a':moveLeft();
+     case 'd':moveRight();
+     default:gotoxy(32,1);cout<<"请输入w,s,a,d中的一个进行控制！"<<endl;}
+  }
+ gotoxy(32,1);
+ cout<<"SUCCESS!"<<endl;
+}
+
+
+
+
+
+#endif
+

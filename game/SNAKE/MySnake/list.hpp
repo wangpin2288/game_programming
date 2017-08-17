@@ -1,0 +1,76 @@
+#ifndef LIST_HPP
+#define LIST_HPP
+
+#include <iostream>
+
+#include "Vector.hpp"
+
+struct list_node{
+	Vector2i pos;	
+	list_node* next;
+
+	list_node(int a, int b):
+		pos(a,b), next(NULL){};
+	list_node(const Vector2i& r):
+		pos(r), next(NULL){};
+};
+
+//head is the direction of growth
+//tail is the direction of decrease
+struct list{
+	list_node *head;
+	list_node *tail;
+	int lenth;
+	
+	list(){ 
+		head = new list_node(-1, -1); 
+		tail = head; 
+		lenth = 0;
+	}
+
+	~list(){ 
+		while(tail != NULL){
+		  pop();
+		}
+	}
+
+
+	bool push(const Vector2i& r){
+		list_node *tmp = head;
+		head = new list_node(r);
+		tmp->next = head;
+		lenth++;
+		return true;
+	}//head向坐标r出移动一步，list的每一部分的元素中的next指针都指向其上方的元素
+
+	bool pop(){
+		list_node *tmp = tail -> next;
+		delete tail; 
+		tail = tmp;
+		lenth--;
+		return true;
+	}//删除list尾部的数据
+
+	Vector2i& readHead(){
+		return head -> pos;
+	}
+	Vector2i& readTail(){
+		if(tail -> next != NULL)
+		    return (tail -> next) -> pos;
+		return tail -> pos;
+	}
+
+	bool check(const Vector2i& r){
+		list_node* cur = tail;
+		while(cur != NULL){
+		  if(cur->pos == r) return true;
+		  cur = cur -> next;
+		}
+		return false;
+	}//一节一节的检查r坐标是否在list中
+
+	int len(){ return lenth;}
+};
+
+
+#endif

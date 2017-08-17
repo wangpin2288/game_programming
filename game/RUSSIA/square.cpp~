@@ -1,0 +1,190 @@
+#include <stdio.h>
+#include <iostream>
+#include <time.h>
+#include "coordinate.cpp"
+#include "TerminalControl.cpp"
+using namespace std;
+
+
+//定义一个方块的类
+class Square{
+public:
+   Square();
+   void DrawSquare();
+   void DrawWill();//随机产生下一个方块
+   bool Turn();//顺时针旋转当前方块90度
+   int min_X();//当前方块的最小横坐标
+   int min_Y();//当前方块的最小纵坐标
+   int max_X();//当前方块的最大横坐标
+   int max_Y();//当前方块的最大纵坐标
+private:
+   int s[4][4];
+   Coordinate pos;//方块左上角的位置坐标
+};
+
+
+Square::Square()
+{
+   for(int i=0;i<4;i++)
+     for(int j=0;j<4;j++)
+     {
+        s[i][j]=0;
+     }//初始化方块数组为0
+
+   pos.X=0;
+   pos.Y=0;
+}
+
+
+void DrawSquare()
+{
+    for(int i=0;i<4;i++)
+     for(int j=0;j<4;j++)
+     {
+        if(s[i][j]==1) draw(pos.X+i,pos.Y+j,'#');
+        else draw(pos.X+i,pos.Y+j,' ');
+     }//初始化方块数组为0
+
+   pos.X=0;
+   pos.Y=0;
+}
+void Square::DrawWill()//随机产生下一个方块
+{
+//产生一个0～6之间的随机数，用于选择方块的种类
+   srand(time(NULL));
+   int N=rand()%7;
+
+//设定方块的7种类型
+   switch(N){
+    case 0:
+         Will[0][0]=1;
+         Will[0][1]=1;
+         Will[1][0]=1;
+         Will[1][1]=1;
+    case 1:
+         Will[0][0]=1;
+         Will[0][1]=1;
+         Will[0][2]=1;
+         Will[1][1]=1;
+    case 2:
+         Will[0][0]=1;
+         Will[0][1]=1;
+         Will[0][2]=1;
+         Will[1][0]=1;
+         Will[2][0]=1;
+    case 3:
+         Will[0][1]=1;
+         Will[1][0]=1;
+         Will[1][1]=1;
+         Will[1][2]=1;
+         Will[2][0]=1;
+    case 4:
+         Will[0][1]=1;
+         Will[1][0]=1;
+         Will[1][1]=1;
+         Will[1][2]=1;
+         Will[2][1]=1;
+    case 5:
+         Will[0][2]=1;
+         Will[1][0]=1;
+         Will[1][1]=1;
+         Will[1][2]=1;
+         Will[2][0]=1;
+    case 6:
+         Will[0][1]=1;
+         Will[1][1]=1;
+         Will[2][1]=1;
+         Will[3][1]=1;
+    default:
+         break;
+  }
+
+//绘制方块
+  for(int i=0;i<4;i++)
+     for(int j=0;j<4;j++)
+     {
+        if(Will[i][j]==1)
+        {
+           gotoxy(i+1,j+1);
+           cout<<'#';
+        }
+     }
+
+   for(int i=0;i<4;i++)
+     for(int j=0;j<4;j++)
+     {
+        All[i][j]=Will[i][j];
+        Now[i][j]=Will[i][j];
+        Will[i][j]=0;
+     }//初始化下一个方块数组为0
+
+}
+
+
+bool Square::Turn()//顺时针旋转当前方块90度
+{
+    int temp[4][4];
+    for(int i=0;i<4;i++)
+     for(int j=0;j<4;j++){
+        temp[i][j]=0;
+        temp[i][j]=Now[i][j];
+     } 
+  
+   for(int k=0;k<4;k++)
+    for(int l=0;l<4;l++){
+        Now[i][j]=temp[j][i];
+    }
+
+   if(isWall()||inBottom()) return false;
+   else return true;
+    
+}
+
+int Square::min_X()
+{
+   int l=4;
+   for(int i=0;i<4;i++)
+    for(int j=0;j<4;j++)
+    {
+       if(Now[i][j]==1&&i<l) l=i;
+    }
+   return l;
+}
+   
+int Russia::min_Y()
+{
+   int l=4;
+   for(int i=0;i<4;i++)
+    for(int j=0;j<4;j++)
+    {
+       if(Now[i][j]==1&&j<l) l=j;
+    }
+   return l;
+}
+   
+
+int Square::max_X()
+{
+   int l=0;
+   for(int i=0;i<4;i++)
+    for(int j=0;j<4;j++)
+    {
+       if(Now[i][j]==1&&i>l) l=i;
+    }
+   return l;
+
+}
+   
+
+int Square::max_Y()
+{
+   int l=0;
+   for(int i=0;i<4;i++)
+    for(int j=0;j<4;j++)
+    {
+       if(Now[i][j]==1&&j>l) l=j;
+    }
+   return l;
+}
+
+

@@ -1,0 +1,111 @@
+#ifndef SNAKEMAP_HPP
+#define SNAKEMAP_HPP
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+#include "coordinate.hpp"
+
+void gotoxy(int x,int y)//光标定位函数
+{
+   printf("\x1b[%d;%df",x,y);
+}
+
+void gotoxy(Coordinate c)//光标定位函数
+{
+   printf("\x1b[%d;%df",c.m_iX,c.m_iY);
+}
+
+
+class snakeMap
+{
+public:
+   snakeMap(const char fileName[]);
+   bool checkIn(Coordinate coor);
+   //bool checkOut(Coordinate &coor);
+   bool checkWall(Coordinate &coor);
+   bool checkDollar(Coordinate &coor);
+private:
+   char map[100][100];
+   bool ok;
+};
+
+snakeMap::snakeMap(const char fileName[])
+{
+gotoxy(24,1);
+cout << "HELLO" << endl;
+	ifstream mapInput( fileName );
+	if( !mapInput.is_open() )
+	{
+		cerr << "Map File Open Failed!!!" << endl;
+		ok = false ;
+		return ;
+	}
+
+	mapInput >> size.m_iX  >> size.m_iY;
+
+	mapInput.ignore();
+        for(int i = 0; i < size.m_iX; i++ )
+		mapInput.getline( map[i], size.m_iY + 1 );
+	
+	mapInput.close();
+	ok = true;
+
+}
+
+
+Coordinate snakeMap::getSize()
+{
+   return size.m_iX*size.m_iY;
+}
+
+
+bool snakeMap::checkIn(Coordinate coor)
+{
+   if(coor.m_iX>=0&&coor.m_iX<size.m_iX&&coor.m_iY>=0&&coor.m_iY<size.m_iY) return 1;
+   else return 0;
+}
+
+bool snakeMap::checkDoor(Coordinate &coor)
+{
+   if((coor.m_iX*coor.m_iY==0||coor.m_iX==size.m_iX-1||coor.m_iY==size.m_iY)&&(!checkWall(coor))) return 1;
+   else return 0;
+}
+
+bool snakeMap::checkWall(Coordinate &coor)
+{
+   if(map[coor.m_iX][coor.m_iY]=="#") return 1;
+   else return 0;
+}
+
+bool snakeMap::checkDollar(Coordinate &coor)
+{
+   if(map[coor.m_iX][coor.m_iY]=="$") return 1;
+   else return 0;
+}
+
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

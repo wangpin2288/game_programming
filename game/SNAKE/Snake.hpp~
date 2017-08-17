@@ -1,0 +1,176 @@
+#ifndef SNAKE_HPP
+#define SNAKE_HPP
+
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include <unistd.h>
+#include <algorithm>
+
+#include "snakeMap.hpp"
+using namespace std;
+
+
+//定义蛇的类
+class Snake
+{
+public:
+   Snake(char snake,snakeMap* map);
+
+   Coordinate getHead(){return snake.front();};//返回链表首位坐标作为蛇头坐标
+   Coordinate getTail(){return snake.back();};//返回链表尾部坐标作为蛇尾坐标
+
+   vector<Coordiante> getSnake(){return snake;};   
+
+   int getLength(){return snake.size();};//返回链表的大小作为蛇的长度
+   void setPic(char pic){snakePic=pic;};
+   char getPic(){return snakePic;};
+   void Up();
+   void Down();
+   void Left();
+   void Right();
+ 
+   void winDollar(Coordinate coor);
+   snakeMap* getMap(){return Map;};
+private:
+   snakeMap* Map;
+   list<Coordinate> snake;//表示蛇身体的链表
+   char snakePic;//表示蛇的字符
+};
+
+Snake:Snake(char s,snakeMap* map):snakePic(s),Map(map)
+{
+   snake.push_back((6,31));
+   snake.push_back((6,32));
+   snake.push_back((6,33));
+   snake.push_back((6,34));
+   snake.push_back((6,35));
+}
+
+/*
+蛇向上运动一步：
+先检查是否是墙，若上方是墙，则游戏结束
+再检查是否是美元，若是，则蛇长度+1
+若以上情况都不是，则向上运动一步
+*/
+void Snake::Up()
+{
+  if(getMap()->checkWall(getHead()+(-1,0)))
+   {
+      gotoxy(25,1);
+      cout<<"GAME OVER!"<<endl;
+   }
+else if(getMap()->checkDollar(getHead()+(-1,0)))
+  {
+      winDollar(getHead()+(-1,0));
+  }
+
+else
+  {
+   gotoxy(getTail().m_iX,getTail().m_iY);
+   cout<<" "<<endl;
+   gotoxy(getHead().m_iX-1,getHead().m_iY);
+   cout<<snakePic;
+}
+}
+ 
+
+//向下运动一步  
+void Snake::Down()
+{
+if(getMap()->checkWall(getTail()+(1,0)))
+   {
+      gotoxy(25,1);
+      cout<<"GAME OVER!"<<endl;
+   }
+else if(getMap()->checkDollar(getTail()+(1,0)))
+  {
+      winDollar(getTail()+(1,0));
+  }
+
+else
+  {
+   gotoxy(getHead().m_iX,getHead().m_iY);
+   cout<<" "<<endl;
+   gotoxy(getTail().m_iX+1,getTail().m_iY);
+   cout<<snakePic;
+}
+}
+
+
+//向左运动一步
+void Snake::Left()
+{
+if(getMap()->checkWall(getHead()+(0,-1)))
+   {
+      gotoxy(25,1);
+      cout<<"GAME OVER!"<<endl;
+   }
+else if(getMap()->checkDollar(getHead()+(0,-1)))
+  {
+      winDollar(getHead()+(0,-1));
+  }
+
+else
+  {
+   gotoxy(getTail().m_iX,getTail().m_iY);
+   cout<<" "<<endl;
+   gotoxy(getHead().m_iX,getHead().m_iY-1);
+   cout<<snakePic;
+}
+}
+
+
+//向右运动一步
+void Snake::Right()
+{
+if(getMap()->checkWall(getHead()+(0,1)))
+   {
+      gotoxy(25,1);
+      cout<<"GAME OVER!"<<endl;
+   }
+else if(getMap()->checkDollar(getHead()+(0,1)))
+  {
+      winDollar(getHead()+(0,1));
+  }
+
+else
+  {
+   gotoxy(getTail().m_iX,getTail().m_iY);
+   cout<<" "<<endl;
+   gotoxy(getHead().m_iX,getHead().m_iY+1);
+   cout<<snakePic;
+}
+}
+
+
+void Snake::winDollar(Coordinate coor)
+{
+   snake.push_front(coor);
+   gotoxy(26,1);
+   cout<<"恭喜你！获得金币一枚～"<<endl;
+}
+
+
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   char controlKey(char key);
